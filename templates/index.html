@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Sentiment Analysis</h1>
+
+        <!-- Text input form for sentiment analysis -->
+        <form method="POST" action="/prediction">
+            <input type="text" name="user_input" placeholder="Enter text" required>
+            <button type="submit">Analyze Sentiment</button>
+        </form>
+
+        <!-- Display sentiment result -->
+        {% if sentiment %}
+            <div id="result" class="{{ sentiment | lower }}">
+                <p>{{ sentiment }}</p>
+            </div>
+        {% endif %}
+
+        <!-- Suggestion textarea for user input -->
+        <textarea name="suggestions" placeholder="Your suggestions here..."></textarea>
+        <button type="submit">Submit</button>
+        
+        <!-- Feedback form with Like/Dislike buttons -->
+        <form method="POST" action="/feedback">
+            <button name="feedback" value="like">Like</button>
+            <button name="feedback" value="dislike">Dislike</button>
+        </form>
+
+    </div>
+</body>
+</html>

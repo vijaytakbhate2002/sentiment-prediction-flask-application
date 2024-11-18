@@ -1,0 +1,141 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 60%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+button[name="feedback"] {
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[name="feedback"]:hover {
+    background-color: #f1f1f1;
+}
+
+/* Result Styles */
+#result {
+    padding: 20px;
+    margin-top: 20px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Emotion-coded classes for different sentiments */
+#result.positive {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#result.negative {
+    background-color: #f44336;
+    color: white;
+}
+
+#result.neutral {
+    background-color: #9E9E9E;
+    color: white;
+}
+
+#result.irrelevant {
+    background-color: #FF9800;
+    color: white;
+}
+
+/* Sentiment Class Colors */
+.positive {
+    color: green;
+}
+
+.negative {
+    color: red;
+}
+
+.irrelevant {
+    color: gray;
+}
+
+.neutral {
+    color: blue;
+}
+
+/* Suggestion Textarea Styles */
+textarea[name="suggestions"] {
+    width: 60%;
+    height: 100px;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    input[type="text"], textarea[name="suggestions"] {
+        width: 100%;
+    }
+}
+
+/* Transition Effects for Input and Button */
+input[type="text"]:hover, button:hover {
+    background-color: #f0f0f0;
+}
