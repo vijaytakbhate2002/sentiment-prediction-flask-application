@@ -18,3 +18,5 @@
 2024-11-18 16:58:11,473 - werkzeug - INFO -  * Debugger PIN: 713-551-296
 2024-11-18 16:58:39,164 - werkzeug - INFO -  * Detected change in 'E:\\Projects\\sentiment_prediction\\sentiment_prediction_web_app\\app.py', reloading
 2024-11-18 16:58:39,398 - werkzeug - INFO -  * Restarting with stat
+2024-11-18 16:58:42,984 - werkzeug - WARNING -  * Debugger is active!
+2024-11-18 16:58:42,989 - werkzeug - INFO -  * Debugger PIN: 713-551-296

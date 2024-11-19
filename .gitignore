@@ -1,2 +1,5 @@
 env
 temp.py
+app.log
+credentials.env
+config.py

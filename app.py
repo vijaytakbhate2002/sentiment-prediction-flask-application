@@ -1,53 +1,66 @@
 import logging
-import mysql.connector
 from flask import Flask, request, render_template, redirect
-from sentiment_prediction import predict  # Import your pre-built package
-# from db_config import db_config  # Assuming you have a db_config in db_config.py for DB settings
+from sentiment_prediction import predict  
+from db_operations.db_handling import DatabaseOperations
 
-# Set up logging
+
 logging.basicConfig(
-    level=logging.DEBUG,  # Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # Define the log format
+    level=logging.DEBUG,  
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  
     handlers=[
-        logging.FileHandler('app.log'),  # Log to a file named app.log
-        logging.StreamHandler()  # Also log to console
+        logging.FileHandler('app.log'),  
+        logging.StreamHandler() 
     ]
 )
 
-sentiment = None
+db_operations = DatabaseOperations()
+
+
+model_prediction = None
 user_input = None
 app = Flask(__name__)
 
+
+
 @app.route('/')
-def home(sentiment=sentiment, user_input=user_input):
-    return render_template('index.html', sentiment=sentiment, user_input=user_input)
+def home(model_prediction=model_prediction, user_input=user_input):
+    return render_template('index.html', model_prediction=model_prediction, user_input=user_input)
+
+
 
 @app.route('/prediction', methods=['POST'])
 def prediction():
-    logging.info("User predict ...")
+    """predict sentiment for user input which is came from index.html page from user
+        insert into last row"""
+    
+    logging.info("Reading user input ...")
     user_input = request.form['user_input']
-    logging.info(f"user_input ========================================= {user_input}")
+    logging.info(f"user_input = {user_input}")
     
-    sentiment = predict.predictor(user_input) 
-    logging.info(f"sentiment ========================================= {sentiment}")
+    model_prediction = predict.predictor(user_input) 
+    logging.info(f"predicted sentiment = {model_prediction}")
+
+    db_operations.insertRow(user_input=user_input, 
+                            model_prediction=model_prediction, 
+                            user_satisfaction_level=None, 
+                            user_suggestion=None)
     
-    logging.info(f"New input added to the database: {user_input}, {sentiment}")
-    return home(sentiment=sentiment, user_input=user_input)
+    logging.info(f"New entry to database {user_input}, {model_prediction}")
+
+    return home(model_prediction=model_prediction, user_input=user_input)
+
+
 
 @app.route('/feedback', methods=['POST'])
 def feedback():
-    feedback = request.form['feedback']
-    suggestions = request.form['suggestions']
-    
-    # conn = get_db_connection()
-    # cursor = conn.cursor()
-    # cursor.execute("""
-    # UPDATE UserInput SET feedback=%s, suggestion=%s 
-    # WHERE id = (SELECT MAX(id) FROM UserInput)
-    # """, (feedback, suggestions))
-    # conn.commit()
-    # cursor.close()
-    # conn.close()
+
+    user_satisfaction_level = request.form['feedback']
+    user_suggestion = request.form['suggestions']
+
+    db_operations.replaceLastIfSame(user_input=user_input, 
+                            model_prediction=model_prediction, 
+                            user_satisfaction_level=user_satisfaction_level, 
+                            user_suggestion=user_suggestion)
 
     logging.info("Feedback and suggestions updated for the latest input.")
     return redirect('/')
