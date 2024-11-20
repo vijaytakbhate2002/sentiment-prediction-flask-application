@@ -2,19 +2,16 @@ import logging
 from flask import Flask, request, render_template, redirect
 from sentiment_prediction import predict  
 from db_operations.db_handling import DatabaseOperations
-
+from text_operations import emojis_remover
 
 logging.basicConfig(
-    level=logging.DEBUG,  
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  
-    handlers=[
-        logging.FileHandler('app.log'),  
-        logging.StreamHandler() 
-    ]
+    filename='logs.log',        
+    filemode='a',               
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.INFO          
 )
 
 db_operations = DatabaseOperations()
-
 
 model_prediction = None
 user_input = None
@@ -35,9 +32,14 @@ def prediction():
     
     logging.info("Reading user input ...")
     user_input = request.form['user_input']
-    logging.info(f"user_input = {user_input}")
+    user_input = emojis_remover.remove_emojis(user_input)
+
+    if user_input == None:
+        return home(model_prediction=None, user_input=None)
     
-    model_prediction = predict.predictor(user_input) 
+    logging.info(f"user_input = {user_input}")
+
+    model_prediction = predict.predictor(user_input)[0]
     logging.info(f"predicted sentiment = {model_prediction}")
 
     db_operations.insertRow(user_input=user_input, 
@@ -53,14 +55,11 @@ def prediction():
 
 @app.route('/feedback', methods=['POST'])
 def feedback():
+    user_satisfaction_level = request.form['user_satisfaction']
+    user_suggestion = request.form['user_suggestion']
 
-    user_satisfaction_level = request.form['feedback']
-    user_suggestion = request.form['suggestions']
-
-    db_operations.replaceLastIfSame(user_input=user_input, 
-                            model_prediction=model_prediction, 
-                            user_satisfaction_level=user_satisfaction_level, 
-                            user_suggestion=user_suggestion)
+    db_operations.updateLastRow(user_satisfaction_level=user_satisfaction_level,
+                                user_suggestion=user_suggestion)
 
     logging.info("Feedback and suggestions updated for the latest input.")
     return redirect('/')

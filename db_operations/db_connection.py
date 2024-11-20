@@ -1,8 +1,7 @@
 import mysql.connector
 from mysql.connector import errorcode
 import logging
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 class DatabaseConnection:
     """Handles database connection and operations."""
@@ -36,7 +35,7 @@ class DatabaseConnection:
         finally:
             if self.connection and self.connection.is_connected():
                 logging.info("Database is ready for interaction.")
-        return self
+        return self.connection
 
     def create_table(self, table_name: str = 'USER_INTERACTION') -> None:
         """Creates a table with the specified name."""
@@ -47,7 +46,7 @@ class DatabaseConnection:
                     ID INT PRIMARY KEY AUTO_INCREMENT,
                     user_input VARCHAR(1000),
                     model_output VARCHAR(100),
-                    user_satisfaction_level INT DEFAULT 2,
+                    user_satisfaction_level INT DEFAULT NULL,
                     user_suggestion VARCHAR(500)
                 )
                 """

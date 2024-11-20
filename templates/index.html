@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentiment Analysis</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container">
         <h1>Sentiment prediction</h1>
@@ -17,22 +19,56 @@
         </form>
 
         <!-- Display sentiment result -->
-        {% if sentiment %}
-            <div id="result" class="{{ sentiment | lower }}">
-                <p>{{ sentiment }}</p>
-            </div>
+        {% if model_prediction %}
+        <div id="result" class="{{ model_prediction | lower }}">
+            <p>{{ model_prediction }}</p>
+        </div>
         {% endif %}
 
-        <!-- Suggestion textarea for user input -->
-        <textarea name="suggestions" placeholder="Your suggestions here..."></textarea>
-        <button type="submit">Submit</button>
-        
-        <!-- Feedback form with Like/Dislike buttons -->
+        <!-- Feedback form for Like/Dislike -->
+        <!-- {% if model_prediction %}
         <form method="POST" action="/feedback">
-            <button name="feedback" value="like">Like</button>
-            <button name="feedback" value="dislike">Dislike</button>
+            <div class="toggle-container">
+                <label>
+                    <input type="radio" name="user_satisfaction" value=1>
+                    <span>Like</span>
+                </label>
+                <label>
+                    <input type="radio" name="user_satisfaction" value=-1>
+                    <span>Dislike</span>
+                </label>
+                <textarea name="user_suggestion" placeholder="Your suggestions here..."></textarea>
+            </div>
+            <button type="submit">Submit Feedback</button>
         </form>
+        {% endif %} -->
+        {% if model_prediction %}
+        <form method="POST" action="/feedback">
+            <div class="toggle-container">
+
+                <!-- Like and Dislike options -->
+                <label>
+                    <input type="radio" name="user_satisfaction" value=1>
+                    <span>Like</span>
+                </label>
+                <label>
+                    <input type="radio" name="user_satisfaction" value=0 checked>
+                    <span>Neutral</span>
+                </label>
+                <label>
+                    <input type="radio" name="user_satisfaction" value=-1>
+                    <span>Dislike</span>
+                </label>
+                <textarea name="user_suggestion" placeholder="Your suggestions here..."></textarea>
+            </div>
+            <button type="submit">Submit Feedback</button>
+        </form>
+        {% endif %}
+
+
+        <!-- Suggestion textarea for user input (optional) -->
 
     </div>
 </body>
+
 </html>
