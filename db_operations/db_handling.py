@@ -3,12 +3,12 @@ sys.path.append('\\'.join(__file__.split('\\')[:-2]))
 import config
 from db_operations.db_connection import DatabaseConnection
 import logging
-from config import USER, HOST, DATABASE, PASSWORD
+from config import USER, HOST, DATABASE, PASSWORD, PORT
 
 logger = logging.getLogger(__name__)
 
 class DatabaseOperations:
-    db_connection = DatabaseConnection(host=HOST, user=USER, database=DATABASE, password=PASSWORD)
+    db_connection = DatabaseConnection(host=HOST, user=USER, database=DATABASE, password=PASSWORD, port=PORT)
     db = db_connection.connect()
     db_connection.create_table()
     cursor = db_connection.get_cursor()

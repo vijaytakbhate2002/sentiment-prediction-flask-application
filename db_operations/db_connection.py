@@ -6,11 +6,12 @@ logger = logging.getLogger(__name__)
 class DatabaseConnection:
     """Handles database connection and operations."""
     
-    def __init__(self, host, database, user, password):
+    def __init__(self, host, database, user, password, port:int=3306):
         self.host = host
         self.database = database
         self.user = user
         self.password = password
+        self.port = port
         self.connection = None
         self.cursor = None
 
@@ -21,7 +22,8 @@ class DatabaseConnection:
                 user=self.user,
                 password=self.password,
                 host=self.host,
-                database=self.database
+                database=self.database,
+                port = self.port
             )
             self.cursor = self.connection.cursor()
             logging.info("Database connection successful...")
